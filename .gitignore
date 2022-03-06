@@ -4,6 +4,8 @@ build
 unit_tests
 .idea
 .vscode
+CODE_COVERAGE
+*.info
 # Prerequisites
 *.d
 
