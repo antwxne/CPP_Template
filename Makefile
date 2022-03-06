@@ -39,5 +39,8 @@ re: clean all
 tests_run: debug_build
 	cmake --build $(BUILD_DIR) --target $(TESTS_NAME)
 	./$(TESTS_NAME)
+
+.PHONY: coverage
+coverage:
 	lcov --capture --directory ./build/CMakeFiles/unit_tests.dir --output-file gtest_coverage.info
 	genhtml gtest_coverage.info --output-directory CODE_COVERAGE
