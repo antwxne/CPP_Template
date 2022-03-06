@@ -58,5 +58,5 @@ jobs:
         working-directory: ./build
 
       - name: Run unit tests
-        run: ${{ matrix.bin }}
+        run: ./${{ matrix.bin }}
         working-directory: ./
