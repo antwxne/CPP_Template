@@ -1,3 +1,9 @@
+cmake-build-debug
+cmake-build-release
+build
+unit_tests
+.idea
+.vscode
 # Prerequisites
 *.d
 
