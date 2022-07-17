@@ -32,6 +32,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Cache conan libs folder
+        id: conan-libs
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-conan-libs
+        with:
+          path: |
+            /home/runner/.conan
+          key: ${{ runner.os }}-build-${{ env.cache-name }}_${{ hashFiles('/home/runner/.conan/*') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}_${{ hashFiles('/home/runner/.conan/*') }}
+
+
       - name: Create build folder
         run: mkdir -p build
 
