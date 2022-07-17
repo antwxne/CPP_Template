@@ -14,7 +14,7 @@ all: $(NAME)
 
 .PHONY: build
 build:
-	mkdir -p $(BUILD_DIR) && cd $(BUILD_DIR) && conan install --build=missing .. && cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -G "Unix Makefiles" ..
+	mkdir -p $(BUILD_DIR) && cd $(BUILD_DIR) && cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -G "Unix Makefiles" ..
 
 .PHONY: debug_build
 debug_build: BUILD_TYPE	=	Debug

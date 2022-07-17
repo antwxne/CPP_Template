@@ -22,16 +22,10 @@ jobs:
             bin: unit_tests.exe
             min_lines: 0
             gcovr_install: pip install gcovr --upgrade
-            conan_install: pip install conan --upgrade
-            conan_config: ""
           - os: ubuntu-latest
             bin: unit_tests
             min_lines: 90
             gcovr_install: pip install gcovr --upgrade
-            conan_install: pip install conan --upgrade
-            conan_config: sudo .github/requirements.sh &&
-              conan profile new --detect default &&
-              conan profile update settings.compiler.libcxx=libstdc++11 default
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     steps:
@@ -39,19 +33,6 @@ jobs:
 
       - name: Create build folder
         run: mkdir -p ./tests-build
-
-      - name: Install conan
-        run: ${{ matrix.conan_install }}
-
-      - name: Configure conan
-        run: ${{ matrix.conan_config }}
-          
-
-      - name: Install conan libs
-        run: |
-          conan install --build=missing ..
-        working-directory: ./tests-build
-
 
       - name: Build tests
         run: |

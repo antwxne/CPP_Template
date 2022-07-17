@@ -14,7 +14,7 @@ FROM gcc
 WORKDIR /app
 
 ARG TARGET=a.out
-COPY --from=builder /build/bin/${TARGET} .
+COPY --from=builder /build/${TARGET} .
 
 ENV BIN_NAME "./${TARGET}"
 CMD $BIN_NAME

@@ -21,11 +21,6 @@ if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
 endif ()
 
 
-# conan settings
-include(${CMAKE_SOURCE_DIR}/build/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS KEEP_RPATHS)
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-
 #includes
 include_directories(Sources)
 
@@ -37,7 +32,6 @@ set(SRC ${SRC} )
 
 # Build
 add_executable(${NAME} ${MAIN} ${SRC})
-conan_target_link_libraries(${NAME} ${CONAN_LIBS})
 
 # Use external repository
 #include(ExternalProject)
@@ -51,7 +45,7 @@ conan_target_link_libraries(${NAME} ${CONAN_LIBS})
 #)
 #
 #add_dependencies(${NAME} external)
-#ExternalProject_Get_Property(ziapi external)
+#ExternalProject_Get_Property(repo external)
 #include_directories(${SOURCE_DIR}/include)
 
 # Unit tests

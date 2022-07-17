@@ -18,49 +18,16 @@ jobs:
       TARGET: a.out
     strategy:
       matrix:
-        include:
-          - os: windows-latest
-            conan_install: pip install conan --upgrade
-            conan_config: ""
-          - os: ubuntu-latest
-            conan_install: pip install conan --upgrade
-            conan_config: sudo .github/requirements.sh &&
-              conan profile new --detect default &&
-              conan profile update settings.compiler.libcxx=libstdc++11 default
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v2
 
-      - name: Cache conan libs folder
-        id: conan-libs
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-conan-libs
-        with:
-          path: |
-            /home/runner/.conan
-          key: ${{ runner.os }}-build-${{ env.cache-name }}_${{ hashFiles('/home/runner/.conan/*') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}_${{ hashFiles('/home/runner/.conan/*') }}
-
-
       - name: Create build folder
         run: mkdir -p build
 
-      - name: Install conan
-        run: ${{ matrix.conan_install }}
-
-      - name: Configure conan
-        run: ${{ matrix.conan_config }}
-          
-
-      - name: Install conan libs
-        run: |
-          conan install --build=missing ..
-        working-directory: ./build
-
       - name: Build project
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" .. && cmake --build . --target $TARGET
+          cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build . --target $TARGET
         working-directory: ./build
