@@ -6,7 +6,7 @@ Template repository for C++ project using Conan
 Windows:
 
 ```shell
-mkdir -p build && cd build && conan install .. --build=missing && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build . --target a.out ; cd .. 
+mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build . --target a.out ; cd .. 
 ```
 
 Unix and MacOS:
@@ -15,13 +15,14 @@ Unix and MacOS:
 make
 ```
 
+> Executables will be in the build folder.
 
 ## Tests
 
 Windows:
 
 ```shell
-mkdir -p build && cd build && conan install .. --build=missing && cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release .. && cmake --build . --target unit_tests ; cd ..
+mkdir -p build && cd build  && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build . --target unit_tests ; cd ..
 ```
 
 Unix and MacOS:
@@ -29,3 +30,5 @@ Unix and MacOS:
 ```shell
 make tests_run
 ```
+
+> Executables will be in the build folder.

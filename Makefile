@@ -38,4 +38,4 @@ re: clean all
 .PHONY: tests_run
 tests_run: debug_build
 	cmake --build $(BUILD_DIR) --target $(TESTS_NAME)
-	./$(TESTS_NAME)
+	./$(BUILD_DIR)/$(TESTS_NAME)

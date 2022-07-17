@@ -23,7 +23,7 @@ jobs:
             min_lines: 0
             gcovr_install: pip install gcovr --upgrade
           - os: ubuntu-latest
-            bin: unit_tests
+            bin: ./tests-build/unit_tests
             min_lines: 0
             gcovr_install: pip install gcovr --upgrade
     runs-on: ${{ matrix.os }}
@@ -40,8 +40,7 @@ jobs:
         working-directory: ./tests-build
       
       - name: Run tests
-        run: ./${{ matrix.bin }}
-        working-directory: ./tests-build
+        run: ./${{ matrix.bin }} 
 
       - name: Install gcovr
         run: ${{ matrix.gcovr_install }}
