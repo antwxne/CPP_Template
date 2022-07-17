@@ -15,7 +15,7 @@ set(TESTS_SRC
 
 enable_testing()
 
-set(CMAKE_CXX_FLAGS --coverage)
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} --coverage)
 add_executable(${TESTS_NAME} ${TESTS_SRC} ${SRC})
 
 target_link_libraries(${TESTS_NAME} gtest gtest_main)

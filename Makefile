@@ -14,7 +14,7 @@ all: $(NAME)
 
 .PHONY: build
 build:
-	mkdir -p $(BUILD_DIR) && cd $(BUILD_DIR) && cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -G "Unix Makefiles" ..
+	cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -G "Unix Makefiles" -S . -B $(BUILD_DIR)
 
 .PHONY: debug_build
 debug_build: BUILD_TYPE	=	Debug
@@ -22,7 +22,7 @@ debug_build: build
 
 .PHONY: $(NAME)
 $(NAME): build
-	cmake --build $(BUILD_DIR) --target $(NAME)
+	cmake --build $(BUILD_DIR) --target $(NAME) -- -j
 
 .PHONY: debug
 debug: debug_build

@@ -1,5 +1,5 @@
 #Cmake version
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.20)
 
 #Project name
 project(Template)
@@ -11,15 +11,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #Flags
-set(CMAKE_CXX_FLAGS_RELEASE_INIT -Wall -Wextra)
-set(CAKE_CXX_FLAGS_DEBUG_INIT ${CMAKE_CXX_FLAGS_RELEASE_INIT} -ggdb -g3)
-
-
-if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
-    message("Defining DEBUG Macro...")
-    add_compile_definitions(DEBUG)
-endif ()
-
+set(CMAKE_CXX_FLAGS_RELEASE "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_RELEASE} -ggdb -g3 -DDEBUG")
 
 #includes
 include_directories(Sources)

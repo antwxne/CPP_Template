@@ -19,7 +19,7 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            bin: unit_tests.exe
+            bin: ./tests-build/Debug/unit_tests.exe
             min_lines: 0
             gcovr_install: pip install gcovr --upgrade
           - os: ubuntu-latest
