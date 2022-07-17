@@ -15,7 +15,7 @@ set(CMAKE_CXX_FLAGS_RELEASE_INIT -Wall -Wextra)
 set(CAKE_CXX_FLAGS_DEBUG_INIT ${CMAKE_CXX_FLAGS_RELEASE_INIT} -ggdb -g3)
 
 
-if (${CMAKE_BUILD_TYPE} STREQUAL Debug)
+if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
     message("Defining DEBUG Macro...")
     add_compile_definitions(DEBUG)
 endif ()
@@ -25,10 +25,6 @@ endif ()
 include(${CMAKE_SOURCE_DIR}/build/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS KEEP_RPATHS)
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-
-# Change output directory
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${PROJECT_SOURCE_DIR}/)
 
 #includes
 include_directories(Sources)

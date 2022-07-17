@@ -14,7 +14,20 @@ on:
 jobs:
   build_ubuntu:
     name: ubuntu-latest build
-    runs-on: ubuntu-latest
+    env:
+      TARGET: a.out
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            conan_install: pip install conan --upgrade
+            conan_config: ""
+          - os: ubuntu-latest
+            conan_install: pip install conan --upgrade
+            conan_config: .github/requirements.sh &&
+              conan profile new --detect default &&
+              conan profile update settings.compiler.libcxx=libstdc++11 default
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v2
@@ -22,28 +35,12 @@ jobs:
       - name: Create build folder
         run: mkdir -p build
 
-      - name: Cache build folder
-        id: cache-build
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-build-folder
-        with:
-          path: |
-            ./build
-            /home/runner/.conan
-          key: ${{ runner.os }}-build-${{ env.cache-name }}_${{ hashFiles('./Sources/*') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}_${{ hashFiles('./Sources/*') }}
-
       - name: Install conan
-        run: |
-          pip3 install conan --upgrade
+        run: ${{ matrix.gcovr_install }}
 
       - name: Configure conan
-        run: |
-          .github/requirements.sh
-          conan profile new --detect default
-          conan profile update settings.compiler.libcxx=libstdc++11 default
+        run: ${{ matrix.conan_config }}
+          
 
       - name: Install conan libs
         run: |
@@ -52,42 +49,5 @@ jobs:
 
       - name: Build project
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" .. && cmake --build .
-        working-directory: ./build
-
-  build_windows:
-    name: windows-latest build
-    runs-on: windows-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Create build folder
-        run: mkdir -p build
-
-      - name: Cache build folder
-        id: cache-build
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-build-folder
-        with:
-          path: |
-            build
-            \home\runner\.conan
-          key: ${{ runner.os }}-build-${{ env.cache-name }}_${{ hashFiles('./Sources/*') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}_${{ hashFiles('./Sources/*') }}
-
-      - name: Install conan
-        run: |
-          pip3 install conan --upgrade
-
-      - name: Install conan libs
-        run: |
-          conan install --build=missing ..
-        working-directory: ./build
-
-      - name: Build project
-        run: |
-          cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build .
+          cmake -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" .. && cmake --build . --target $TARGET
         working-directory: ./build

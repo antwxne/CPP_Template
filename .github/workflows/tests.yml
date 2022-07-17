@@ -22,10 +22,16 @@ jobs:
             bin: unit_tests.exe
             min_lines: 0
             gcovr_install: pip install gcovr --upgrade
+            conan_install: pip install conan --upgrade
+            conan_config: ""
           - os: ubuntu-latest
             bin: unit_tests
             min_lines: 90
             gcovr_install: pip install gcovr --upgrade
+            conan_install: pip install conan --upgrade
+            conan_config: .github/requirements.sh &&
+              conan profile new --detect default &&
+              conan profile update settings.compiler.libcxx=libstdc++11 default
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     steps:
@@ -34,18 +40,17 @@ jobs:
       - name: Create build folder
         run: mkdir -p ./tests-build
 
+      - name: Install conan
+        run: ${{ matrix.gcovr_install }}
 
+      - name: Configure conan
+        run: ${{ matrix.conan_config }}
+          
 
-      - name: Cache build folder
-        id: cache-test-build
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-test-build-folder
-        with:
-          path: ./tests-build
-          key: ${{ runner.os }}-tests-build-${{ env.cache-name }}_${{ hashFiles('./Sources/*') }}
-          restore-keys: |
-            ${{ runner.os }}-tests-build-${{ env.cache-name }}_${{ hashFiles('./Sources/*') }}
+      - name: Install conan libs
+        run: |
+          conan install --build=missing ..
+        working-directory: ./tests-build
 
 
       - name: Build tests
