@@ -24,7 +24,7 @@ jobs:
             gcovr_install: pip install gcovr --upgrade
           - os: ubuntu-latest
             bin: unit_tests
-            min_lines: 90
+            min_lines: 0
             gcovr_install: pip install gcovr --upgrade
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
