@@ -8,6 +8,6 @@ cmake
 
 [imports]
 lib, *.so* -> lib
-lib, *.dll -> lib
+bin, *.dll -> bin
 lib, *.dylib -> lib
 include, *.h* -> include

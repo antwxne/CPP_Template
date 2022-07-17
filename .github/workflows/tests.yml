@@ -1,0 +1,75 @@
+name: Running Tests
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - CI
+  pull_request:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+jobs:
+  unit_tests_linux:
+    name: Run unit tests
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            bin: unit_tests.exe
+            min_lines: 0
+            gcovr_install: pip install gcovr --upgrade
+          - os: ubuntu-latest
+            bin: unit_tests
+            min_lines: 90
+            gcovr_install: pip install gcovr --upgrade
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create build folder
+        run: mkdir -p ./tests-build
+
+
+
+      - name: Cache build folder
+        id: cache-test-build
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-test-build-folder
+        with:
+          path: ./tests-build
+          key: ${{ runner.os }}-tests-build-${{ env.cache-name }}_${{ hashFiles('./Sources/*') }}
+          restore-keys: |
+            ${{ runner.os }}-tests-build-${{ env.cache-name }}_${{ hashFiles('./Sources/*') }}
+
+
+      - name: Build tests
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build . --target unit_tests
+        working-directory: ./tests-build
+      - name: Run tests
+        run: ./${{ matrix.bin }}
+
+      - name: Install gcovr
+        run: ${{ matrix.gcovr_install }}
+
+      - name: Coverage report
+        continue-on-error: true
+        run: |
+          mkdir -p Coverage_report_${{ matrix.os }}
+          gcovr -e tests-build/ -e Tests/ --html-details Coverage_report_${{ matrix.os }}/index.html
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Coverage_report_${{ matrix.os }}
+          path: Coverage_report_${{ matrix.os }}/*
+
+      - run: |
+          gcovr -e tests-build/ -e Tests/ --fail-under-line ${{ matrix.min_lines }}
+
+ 

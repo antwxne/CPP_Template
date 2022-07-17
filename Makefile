@@ -14,7 +14,7 @@ all: $(NAME)
 
 .PHONY: build
 build:
-	mkdir -p $(BUILD_DIR) && cd $(BUILD_DIR) && conan install .. --build=missing && cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -G "Unix Makefiles" ..
+	mkdir -p $(BUILD_DIR) && cd $(BUILD_DIR) && conan install --build=missing .. && cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -G "Unix Makefiles" ..
 
 .PHONY: debug_build
 debug_build: BUILD_TYPE	=	Debug
@@ -39,8 +39,3 @@ re: clean all
 tests_run: debug_build
 	cmake --build $(BUILD_DIR) --target $(TESTS_NAME)
 	./$(TESTS_NAME)
-
-.PHONY: coverage
-coverage:
-	lcov --capture --directory ./build/CMakeFiles/unit_tests.dir --output-file gtest_coverage.info
-	genhtml gtest_coverage.info --output-directory CODE_COVERAGE

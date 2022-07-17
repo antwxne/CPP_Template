@@ -1,10 +1,3 @@
-/*
-** EPITECH PROJECT, 2024
-** Project
-** File description:
-** Created by antoine,
-*/
-
 #include <gtest/gtest.h>
 #include <exception>
 

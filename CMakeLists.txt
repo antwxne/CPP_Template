@@ -1,5 +1,5 @@
 #Cmake version
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.23)
 
 #Project name
 project(Template)
@@ -36,7 +36,7 @@ include_directories(Sources)
 # Server Sources
 include(Sources/Sources.cmake)
 set(MAIN
-        Sources/Main.cpp Sources/Main.cpp)
+        Sources/Main.cpp)
 set(SRC ${SRC} )
 
 # Build
