@@ -41,7 +41,7 @@ jobs:
         run: mkdir -p ./tests-build
 
       - name: Install conan
-        run: ${{ matrix.gcovr_install }}
+        run: ${{ matrix.conan_install }}
 
       - name: Configure conan
         run: ${{ matrix.conan_config }}
