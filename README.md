@@ -1,4 +1,5 @@
 # CPP_Template
+
 Template repository for C++ project using Conan
 
 ## Build
@@ -6,7 +7,7 @@ Template repository for C++ project using Conan
 Windows:
 
 ```shell
-mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build . --target a.out ; cd .. 
+cmake -DCMAKE_BUILD_TYPE=Release -S . -B build && cmake --build build --target a.out
 ```
 
 Unix and MacOS:
@@ -22,7 +23,7 @@ make
 Windows:
 
 ```shell
-mkdir -p build && cd build  && cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build . --target unit_tests ; cd ..
+cmake -DCMAKE_BUILD_TYPE=Release -S . -B build && cmake --build build --target unit_tests
 ```
 
 Unix and MacOS:
