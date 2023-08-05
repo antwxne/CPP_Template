@@ -65,7 +65,7 @@ jobs:
         run: |
           mkdir -p CODE_COVERAGE
           gcovr -e Tests -x -o coverage.xml --html-details $COVERAGE_RESULT_DIR/index.html
-          cat $COVERAGE_XML_RESULT_FILE
+          cat coverage.xml
       - name: Upload tests coverage
         uses: actions/upload-artifact@v3
         with:
