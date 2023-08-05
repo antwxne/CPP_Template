@@ -16,9 +16,11 @@ env:
   UNIT_TEST_NAME: unit_tests
 
 jobs:
-
   build:
     name: Build project
+    defaults:
+      run:
+        shell: bash
     env:
       BUILD_LOG_FILE: build_log.txt
     strategy:
