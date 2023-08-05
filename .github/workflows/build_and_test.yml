@@ -38,7 +38,7 @@ jobs:
       - name: Build project
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -S . -B $BUILD_DIR
-          cmake --build $BUILD_DIR --target $BIN_NAME -- -j
+          cmake --build $BUILD_DIR --target $BIN_NAME
       - name: Upload Build log
         uses: actions/upload-artifact@v3
         with:
@@ -65,10 +65,11 @@ jobs:
       - name: Run tests
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -S . -B $BUILD_DIR
-          cmake --build $BUILD_DIR --target $UNIT_TEST_NAME -- -j
+          cmake --build $BUILD_DIR --target $UNIT_TEST_NAME
           ./$BUILD_DIR/$UNIT_TEST_NAME
       - name: Get Coverage
         run: |
+          mkdir -p $COVERAGE_RESULT_DIR
           gcovr -e tests -x -o $COVERAGE_XML_RESULT_FILE --html-details $COVERAGE_RESULT_DIR/index.html
       - name: Upload tests coverage
         uses: actions/upload-artifact@v3
