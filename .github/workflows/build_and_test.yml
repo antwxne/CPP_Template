@@ -58,8 +58,9 @@ jobs:
         CRITERION_VERBOSITY_LEVEL: 1
         CRITERION_OUTPUTS: xml:$TESTS_RESULTS_XML_FILE,tap:TESTS_RESULTS_TAP_FILE
         CRITERION_ALWAYS_SUCCEED: 1
-        COVERAGE_RESULT_DIR: CODE_COVERAGE
-        COVERAGE_XML_RESULT_FILE: coverage.xml
+    env:
+      COVERAGE_RESULT_DIR: CODE_COVERAGE
+      COVERAGE_XML_RESULT_FILE: coverage.xml
     steps:
       - uses: actions/checkout@v3
       - name: Run tests
@@ -69,6 +70,7 @@ jobs:
           ./$BUILD_DIR/$UNIT_TEST_NAME
       - name: Get Coverage
         run: |
+          echo $COVERAGE_RESULT_DIR
           mkdir -p $COVERAGE_RESULT_DIR
           gcovr -e tests -x -o $COVERAGE_XML_RESULT_FILE --html-details $COVERAGE_RESULT_DIR/index.html
       - name: Upload tests coverage
