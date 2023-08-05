@@ -1,5 +1,4 @@
 name: Build and Test
-
 on:
   push:
     branches:
@@ -9,37 +8,25 @@ on:
     branches:
       - master
       - main
-
-env:
-  BUILD_DIR: build
-  BIN_NAME: a.out
-  UNIT_TEST_NAME: unit_tests
-
 jobs:
   build:
     name: Build project
-    defaults:
-      run:
-        shell: bash
-    env:
-      BUILD_LOG_FILE: build_log.txt
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker:latest
     steps:
       - uses: actions/checkout@v3
+      - name: Clean repository
+        continue-on-error: true
+        run: make fclean >> build_log.txt 
       - name: Build project
-        run: |
-          cmake -S . -B $BUILD_DIR >> $BUILD_LOG_FILE
-          cmake --build $BUILD_DIR --target $BIN_NAME >> $BUILD_LOG_FILE
+        run: make &>> build_log.txt
       - name: Upload Build log
         uses: actions/upload-artifact@v3
         with:
           name: Build_log
           path: |
-            ${{ env.BUILD_LOG_FILE }}
+            build_log.txt
           retention-days: 7
   unit_tests:
     name: Run unit tests
@@ -53,16 +40,15 @@ jobs:
         CRITERION_ALWAYS_SUCCEED: 1
     steps:
       - uses: actions/checkout@v3
+      - name: Clean repository
+        continue-on-error: true
+        run: make fclean
       - name: Run tests
-        run: |
-          cmake -S . -B $BUILD_DIR
-          cmake --build $BUILD_DIR --target $UNIT_TEST_NAME
-          ./$BUILD_DIR/$UNIT_TEST_NAME
+        run: make tests_run
       - name: Get Coverage
         run: |
           mkdir -p CODE_COVERAGE
           gcovr -e Tests -x -o coverage.xml --html-details $COVERAGE_RESULT_DIR/index.html
-          cat coverage.xml
       - name: Upload tests coverage
         uses: actions/upload-artifact@v3
         with:
@@ -99,7 +85,6 @@ jobs:
           include_passed: true
           detailed_summary: true
           job_name: Unit tests report
-  
   coverage_report:
     needs: [unit_tests, tests_report]
     name: Coverage report

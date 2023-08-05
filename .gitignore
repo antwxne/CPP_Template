@@ -1,4 +1,5 @@
 cmake-build-debug
+*.gc*
 cmake-build-release
 build
 unit_tests
