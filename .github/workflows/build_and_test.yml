@@ -77,7 +77,7 @@ jobs:
           name: tests_coverage
           path: |
             $COVERAGE_RESULT_DIR/*
-            COVERAGE_XML_RESULT_FILE
+            $COVERAGE_XML_RESULT_FILE
           retention-days: 7
       - name: Upload tests results
         uses: actions/upload-artifact@v3

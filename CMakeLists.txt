@@ -10,13 +10,6 @@ set(NAME a.out)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#Flags
-# if (UNIX)
-    set(CMAKE_CXX_FLAGS_RELEASE "-Wall -Wextra")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_RELEASE} -ggdb -g3 -DDEBUG")
-# endif (UNIX)
-
-
 #includes
 include_directories(Sources)
 
