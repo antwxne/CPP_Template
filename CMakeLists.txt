@@ -9,6 +9,12 @@ set(NAME a.out)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
+if(UNIX)
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+endif()
+
 
 #includes
 include_directories(Sources)
@@ -21,21 +27,6 @@ set(SRC ${SRC} )
 
 # Build
 add_executable(${NAME} ${MAIN} ${SRC})
-
-# Use external repository
-#include(ExternalProject)
-#
-#ExternalProject_Add(
-#        external
-#        GIT_REPOSITORY https://github.com/
-#        GIT_TAG ""
-#        INSTALL_COMMAND ""
-#        TEST_COMMAND ""
-#)
-#
-#add_dependencies(${NAME} external)
-#ExternalProject_Get_Property(repo external)
-#include_directories(${SOURCE_DIR}/include)
 
 # Unit tests
 include(Tests/Tests.cmake)
