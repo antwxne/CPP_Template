@@ -38,3 +38,4 @@ CODE_COVERAGE
 *.exe
 *.out
 *.app
+.bash_history
