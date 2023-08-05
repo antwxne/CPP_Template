@@ -52,43 +52,37 @@ jobs:
     container:
       image: epitechcontent/epitest-docker:latest
       env:
-        TESTS_RESULTS_XML_FILE: tests_results.xml
-        TESTS_RESULTS_TAP_FILE: tests_results.tap
         CRITERION_JOBS: "N"
         CRITERION_VERBOSITY_LEVEL: 1
-        CRITERION_OUTPUTS: xml:$TESTS_RESULTS_XML_FILE,tap:TESTS_RESULTS_TAP_FILE
+        CRITERION_OUTPUTS: xml:tests_results.xml,tap:tests_results.tap
         CRITERION_ALWAYS_SUCCEED: 1
-        COVERAGE_RESULT_DIR: CODE_COVERAGE
-        COVERAGE_XML_RESULT_FILE: coverage.xml      
     steps:
       - uses: actions/checkout@v3
       - name: Run tests
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Release -S . -B $BUILD_DIR
+          cmake -S . -B $BUILD_DIR
           cmake --build $BUILD_DIR --target $UNIT_TEST_NAME
           ./$BUILD_DIR/$UNIT_TEST_NAME
       - name: Get Coverage
         run: |
-          echo $COVERAGE_RESULT_DIR
-          mkdir -p $COVERAGE_RESULT_DIR
-          gcovr -e Tests -x -o $COVERAGE_XML_RESULT_FILE --html-details $COVERAGE_RESULT_DIR/index.html
-          ls $COVERAGE_RESULT_DIR    
+          mkdir -p CODE_COVERAGE
+          gcovr -e Tests -x -o coverage.xml --html-details $COVERAGE_RESULT_DIR/index.html
           cat $COVERAGE_XML_RESULT_FILE
       - name: Upload tests coverage
         uses: actions/upload-artifact@v3
         with:
           name: tests_coverage
           path: |
-            $COVERAGE_RESULT_DIR/*
-            $COVERAGE_XML_RESULT_FILE
+            CODE_COVERAGE/*
+            coverage.xml
           retention-days: 7
       - name: Upload tests results
         uses: actions/upload-artifact@v3
         with:
           name: tests_results
           path: |
-            $TESTS_RESULTS_XML_FILE
-            $TESTS_RESULTS_TAP_FILE
+            tests_results.xml
+            tests_results.tap
           retention-days: 7
   tests_report:
     needs: unit_tests
