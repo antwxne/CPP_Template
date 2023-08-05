@@ -27,12 +27,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        include:
-          - docker-image: ["", "epitechcontent/epitest-docker:latest"]
-            os: ubuntu-latest
     runs-on: ${{ matrix.os }}
-    container:
-        image: ${{ matrix.docker-image }}
     steps:
       - uses: actions/checkout@v3
       - name: Build project
