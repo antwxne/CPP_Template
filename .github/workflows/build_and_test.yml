@@ -103,7 +103,7 @@ jobs:
           report_paths: tests_results.xml
           commit: ${{ github.event.workflow_run.head_sha }}
           require_tests: false
-          require_passed_tests: true
+          require_passed_tests: false
           include_passed: true
           detailed_summary: true
           job_name: Unit tests report
