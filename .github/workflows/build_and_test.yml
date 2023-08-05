@@ -26,8 +26,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        docker-image: ["", "epitechcontent/epitest-docker:latest"]
         os: [ubuntu-latest, windows-latest]
+        include:
+          - docker-image: ["", "epitechcontent/epitest-docker:latest"]
+            os: ubuntu-latest
     runs-on: ${{ matrix.os }}
     container:
         image: ${{ matrix.docker-image }}
